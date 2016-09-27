@@ -1,22 +1,37 @@
 package br.com.luque.meurepresentante;
 
 import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 /**
  * Esta classe representa projetos propostos na casa legislativa municipal.
  *
  * @author Leandro Luque
  */
+@Entity
+@Table(name = "projeto")
 public class Projeto extends EntidadeDominio {
 
+    @Column(name = "assunto")
     private String assunto;
+    @ManyToMany(mappedBy = "projetos")
     private List<Politico> autores;
+    @Column(name = "numero")
     private String numero;
+    @Column(name = "ano")
     private int ano;
+    @Column(name = "lei")
     private String lei;
+    @Enumerated(EnumType.STRING)
     private StatusProjeto status;
+    @Column(name = "link_camara")
     private String linkCamara;
-    private Arquivo arquivo;
+    @Enumerated(EnumType.STRING)
     private TipoProjeto tipoProjeto;
 
     public String getAssunto() {
@@ -95,14 +110,6 @@ public class Projeto extends EntidadeDominio {
 
     public void setLinkCamara(String linkCamara) {
         this.linkCamara = linkCamara;
-    }
-
-    public Arquivo getArquivo() {
-        return arquivo;
-    }
-
-    public void setArquivo(Arquivo arquivo) {
-        this.arquivo = arquivo;
     }
 
     public List<Politico> getAutores() {

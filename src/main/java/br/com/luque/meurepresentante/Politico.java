@@ -2,23 +2,49 @@ package br.com.luque.meurepresentante;
 
 import java.util.Date;
 import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * Esta classe implementa politicos (prefeitos, vereadores, deputados etc.).
  *
  * @author Leandro Luque
  */
+@Entity
+@Table(name = "politico")
 public class Politico extends EntidadeDominio {
 
+    @Column(name = "nome")
     private String nome;
+    @OneToOne
+    @JoinColumn(name = "foto_id")
     private Imagem foto;
+    @OneToOne
+    @JoinColumn(name = "partido_id")
     private Partido partidoAtual;
+    @Column(name = "telefone")
     private String telefone;
+    @Column(name = "email")
     private String email;
+    @ManyToMany
+    @JoinTable(name = "projetos_do_politico", joinColumns = {
+        @JoinColumn(name = "politico_id")}, inverseJoinColumns = {
+        @JoinColumn(name = "projeto_id")})
     private List<Projeto> projetos;
+    @Temporal(TemporalType.DATE)
     private Date dataNascimento;
+    @Column(name = "formacao")
     private String formacao;
+    @Column(name = "estado_civil")
     private String estadoCivil;
+    @Column(name = "funcao_atual")
     private Funcao funcaoAtual;
 
     public String getNome() {

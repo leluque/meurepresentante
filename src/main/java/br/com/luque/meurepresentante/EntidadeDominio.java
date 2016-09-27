@@ -2,16 +2,31 @@ package br.com.luque.meurepresentante;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * Esta classe implementa o comportamento comum a entidades de dominio.
  *
  * @author Leandro Luque
  */
-public class EntidadeDominio implements Serializable {
+@MappedSuperclass
+public abstract class EntidadeDominio implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Long id;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "criacao")
     private Date criacao;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "ultima_atualizacao")
     private Date ultimaAtualizacao;
 
     public Long getId() {

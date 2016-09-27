@@ -7,6 +7,6 @@ package br.com.luque.meurepresentante;
  */
 public enum OperadoraCelular {
 
-    OI , TIM, VIVO, CLARO;
+    OI, TIM, VIVO, CLARO;
 
 }

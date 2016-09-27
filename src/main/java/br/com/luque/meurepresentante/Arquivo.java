@@ -1,15 +1,23 @@
 package br.com.luque.meurepresentante;
 
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+
 /**
  * Esta classe implementa arquivos.
  *
  * @author Leandro Luque
  */
-public class Arquivo extends EntidadeDominio {
+@MappedSuperclass
+public abstract class Arquivo extends EntidadeDominio {
 
+    @Column(name = "tamanho")
     private long tamanho;
+    @Column(name = "nome_original")
     private String nomeOriginal;
+    @Column(name = "arquivo_servidor")
     private String arquivoServidor;
+    @Column(name = "tipo")
     private String tipo;
 
     public long getTamanho() {

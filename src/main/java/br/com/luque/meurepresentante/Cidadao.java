@@ -2,20 +2,42 @@ package br.com.luque.meurepresentante;
 
 import java.util.Date;
 import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * Esta classe implementa cidadaos.
  *
  * @author Leandro Luque
  */
+@Entity
+@Table(name = "cidadao")
 public class Cidadao extends EntidadeDominio {
 
+    @Column(name = "cpf")
     private String cpf;
+    @Column(name = "nome")
     private String nome;
+    @Column(name = "email")
     private String email;
+    @Column(name = "telefone")
     private Telefone telefone;
+    @ManyToMany
+    @JoinTable(name = "politicos_acompanhados", joinColumns = {
+        @JoinColumn(name = "cidadao_id")}, inverseJoinColumns = {
+        @JoinColumn(name = "politico_id")})
     private List<Politico> acompanhar;
+    @Enumerated(EnumType.STRING)
     private TipoNotificacao tipoNotificacao;
+    @Temporal(TemporalType.DATE)
     private Date dataNascimento;
 
     public String getCpf() {
