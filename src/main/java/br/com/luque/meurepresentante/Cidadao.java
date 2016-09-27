@@ -23,11 +23,13 @@ import javax.persistence.TemporalType;
 public class Cidadao extends EntidadeDominio {
 
     @Column(name = "cpf")
-    private String cpf;
+    private String CPF;
     @Column(name = "nome")
     private String nome;
     @Column(name = "email")
     private String email;
+    @Column(name = "senha_cripto")
+    private String senha;
     @Column(name = "telefone")
     private Telefone telefone;
     @ManyToMany
@@ -40,12 +42,12 @@ public class Cidadao extends EntidadeDominio {
     @Temporal(TemporalType.DATE)
     private Date dataNascimento;
 
-    public String getCpf() {
-        return cpf;
+    public String getCPF() {
+        return CPF;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    public void setCPF(String CPF) {
+        this.CPF = CPF;
     }
 
     public String getNome() {
@@ -62,6 +64,14 @@ public class Cidadao extends EntidadeDominio {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     public Telefone getTelefone() {
