@@ -15,7 +15,7 @@ public class AdministradorController {
     private ServicoMC servicoMC;
 
     @RequestMapping("/carregarPoliticosMC")
-    public String execute() {
+    public String carregarVereadores() {
         try {
             servicoMC.carregarVereadores();
         } catch (IOException erro) {
@@ -23,4 +23,15 @@ public class AdministradorController {
         }
         return "index";
     }
+
+    @RequestMapping("/carregarProjetosMC")
+    public String carregarProjetos() {
+        try {
+            servicoMC.carregarProjetos();
+        } catch (IOException erro) {
+            erro.printStackTrace();
+        }
+        return "index";
+    }
+
 }

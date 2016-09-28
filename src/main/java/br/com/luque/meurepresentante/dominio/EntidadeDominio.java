@@ -24,10 +24,10 @@ public abstract class EntidadeDominio implements Serializable {
     private Long id;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "criacao")
-    private Date criacao;
+    private Date criacao = new Date();
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "ultima_atualizacao")
-    private Date ultimaAtualizacao;
+    private Date ultimaAtualizacao = new Date();
 
     public Long getId() {
         return id;

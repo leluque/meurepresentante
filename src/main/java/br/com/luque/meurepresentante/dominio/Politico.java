@@ -1,5 +1,6 @@
 package br.com.luque.meurepresentante.dominio;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -13,6 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 /**
  * Esta classe implementa politicos (prefeitos, vereadores, deputados etc.).
@@ -23,7 +25,7 @@ import javax.persistence.TemporalType;
 @Table(name = "politico")
 public class Politico extends EntidadeDominio {
 
-    @Column(name = "nome")
+    @Column(name = "nome", unique = true)
     private String nome;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "foto_id")
@@ -32,13 +34,13 @@ public class Politico extends EntidadeDominio {
     private String partidoAtual;
     @Column(name = "telefone")
     private String telefone;
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(name = "projetos_do_politico", joinColumns = {
         @JoinColumn(name = "politico_id")}, inverseJoinColumns = {
         @JoinColumn(name = "projeto_id")})
-    private List<Projeto> projetos;
+    private List<Projeto> projetos = new ArrayList();
     @Temporal(TemporalType.DATE)
     private Date dataNascimento;
     @Column(name = "formacao")
@@ -47,6 +49,12 @@ public class Politico extends EntidadeDominio {
     private String estadoCivil;
     @Column(name = "funcao_atual")
     private Funcao funcaoAtual;
+    @Column(name = "municipio")
+    private String municipio;
+    @Column(name = "estado")
+    private String estado;
+    @Transient
+    private boolean novo;
 
     public String getNome() {
         return nome;
@@ -148,6 +156,30 @@ public class Politico extends EntidadeDominio {
 
     public void setFuncaoAtual(Funcao funcaoAtual) {
         this.funcaoAtual = funcaoAtual;
+    }
+
+    public String getMunicipio() {
+        return municipio;
+    }
+
+    public void setMunicipio(String municipio) {
+        this.municipio = municipio;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public boolean isNovo() {
+        return novo;
+    }
+
+    public void setNovo(boolean novo) {
+        this.novo = novo;
     }
 
     @Override

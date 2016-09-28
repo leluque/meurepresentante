@@ -1,5 +1,6 @@
 package br.com.luque.meurepresentante.dominio;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,10 +20,10 @@ import javax.persistence.Table;
 @Table(name = "projeto")
 public class Projeto extends EntidadeDominio {
 
-    @Column(name = "assunto")
+    @Column(name = "assunto", length = 1000)
     private String assunto;
     @ManyToMany(mappedBy = "projetos", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Politico> autores;
+    private List<Politico> autores = new ArrayList();
     @Column(name = "numero")
     private String numero;
     @Column(name = "ano")
