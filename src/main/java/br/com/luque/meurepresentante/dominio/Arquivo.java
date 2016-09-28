@@ -1,4 +1,4 @@
-package br.com.luque.meurepresentante;
+package br.com.luque.meurepresentante.dominio;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -20,6 +20,13 @@ public abstract class Arquivo extends EntidadeDominio {
     @Column(name = "tipo")
     private String tipo;
 
+    public Arquivo() {
+    }
+
+    public Arquivo(String nomeOriginal) {
+        this.nomeOriginal = nomeOriginal;
+    }
+    
     public long getTamanho() {
         return tamanho;
     }

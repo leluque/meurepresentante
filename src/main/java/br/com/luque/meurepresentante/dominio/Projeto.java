@@ -1,10 +1,12 @@
-package br.com.luque.meurepresentante;
+package br.com.luque.meurepresentante.dominio;
 
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -19,7 +21,7 @@ public class Projeto extends EntidadeDominio {
 
     @Column(name = "assunto")
     private String assunto;
-    @ManyToMany(mappedBy = "projetos")
+    @ManyToMany(mappedBy = "projetos", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Politico> autores;
     @Column(name = "numero")
     private String numero;

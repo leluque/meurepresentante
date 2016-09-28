@@ -1,4 +1,4 @@
-package br.com.luque.meurepresentante;
+package br.com.luque.meurepresentante.dominio;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,9 +17,14 @@ public class Imagem extends Arquivo {
     private int largura;
     @Column(name = "altura")
     private int altura;
-    @Column(name = "tipo")
-    private String tipo;
 
+    public Imagem() {
+    }
+
+    public Imagem(String nomeOriginal) {
+        super(nomeOriginal);
+    }
+    
     public int getLargura() {
         return largura;
     }

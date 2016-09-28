@@ -1,11 +1,13 @@
-package br.com.luque.meurepresentante;
+package br.com.luque.meurepresentante.dominio;
 
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -32,7 +34,7 @@ public class Cidadao extends EntidadeDominio {
     private String senha;
     @Column(name = "telefone")
     private Telefone telefone;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "politicos_acompanhados", joinColumns = {
         @JoinColumn(name = "cidadao_id")}, inverseJoinColumns = {
         @JoinColumn(name = "politico_id")})

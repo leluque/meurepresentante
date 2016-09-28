@@ -1,4 +1,4 @@
-package br.com.luque.meurepresentante;
+package br.com.luque.meurepresentante.dominio;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

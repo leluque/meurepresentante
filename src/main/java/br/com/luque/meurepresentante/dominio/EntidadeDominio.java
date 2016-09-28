@@ -1,4 +1,4 @@
-package br.com.luque.meurepresentante;
+package br.com.luque.meurepresentante.dominio;
 
 import java.io.Serializable;
 import java.util.Date;

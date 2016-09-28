@@ -1,9 +1,11 @@
-package br.com.luque.meurepresentante;
+package br.com.luque.meurepresentante.dominio;
 
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -23,17 +25,16 @@ public class Politico extends EntidadeDominio {
 
     @Column(name = "nome")
     private String nome;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "foto_id")
     private Imagem foto;
-    @OneToOne
-    @JoinColumn(name = "partido_id")
-    private Partido partidoAtual;
+    @Column(name="partido_atual")
+    private String partidoAtual;
     @Column(name = "telefone")
     private String telefone;
     @Column(name = "email")
     private String email;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "projetos_do_politico", joinColumns = {
         @JoinColumn(name = "politico_id")}, inverseJoinColumns = {
         @JoinColumn(name = "projeto_id")})
@@ -63,11 +64,11 @@ public class Politico extends EntidadeDominio {
         this.foto = foto;
     }
 
-    public Partido getPartidoAtual() {
+    public String getPartidoAtual() {
         return partidoAtual;
     }
 
-    public void setPartidoAtual(Partido partidoAtual) {
+    public void setPartidoAtual(String partidoAtual) {
         this.partidoAtual = partidoAtual;
     }
 
@@ -147,6 +148,11 @@ public class Politico extends EntidadeDominio {
 
     public void setFuncaoAtual(Funcao funcaoAtual) {
         this.funcaoAtual = funcaoAtual;
+    }
+
+    @Override
+    public String toString() {
+        return this.nome + "(" + this.partidoAtual + ") - Tel.: " + this.telefone + " - E-Mail: " + this.email;
     }
 
 }

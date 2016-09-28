@@ -1,4 +1,4 @@
-package br.com.luque.meurepresentante;
+package br.com.luque.meurepresentante.dominio;
 
 /**
  * Esta enumeracao define o conjunto de status possiveis para projetos.
