@@ -34,7 +34,7 @@ public class Politico extends EntidadeDominio {
     private String partidoAtual;
     @Column(name = "telefone")
     private String telefone;
-    @Column(name = "email", unique = true)
+    @Column(name = "email"/*, unique = true*/)
     private String email;
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(name = "projetos_do_politico", joinColumns = {
@@ -53,8 +53,6 @@ public class Politico extends EntidadeDominio {
     private String municipio;
     @Column(name = "estado")
     private String estado;
-    @Transient
-    private boolean novo;
 
     public String getNome() {
         return nome;
@@ -172,14 +170,6 @@ public class Politico extends EntidadeDominio {
 
     public void setEstado(String estado) {
         this.estado = estado;
-    }
-
-    public boolean isNovo() {
-        return novo;
-    }
-
-    public void setNovo(boolean novo) {
-        this.novo = novo;
     }
 
     @Override

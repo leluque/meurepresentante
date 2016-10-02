@@ -20,4 +20,6 @@ public interface ServicoMC {
     void inserirPoliticos(List<Politico> politicos);
     void inserirProjetos(List<Projeto> projetos);
     
+    List<Projeto> procurarProjetos();
+    
 }

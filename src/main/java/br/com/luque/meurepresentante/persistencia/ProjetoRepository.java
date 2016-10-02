@@ -1,6 +1,7 @@
 package br.com.luque.meurepresentante.persistencia;
 
 import br.com.luque.meurepresentante.dominio.Projeto;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -10,4 +11,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface ProjetoRepository extends JpaRepository<Projeto, Long> {
 
+    List<Projeto> findByAssuntoContaining(String assunto);
+    
 }

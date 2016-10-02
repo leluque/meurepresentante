@@ -4,6 +4,8 @@
     Author     : leand
 --%>
 
+<%@page import="br.com.luque.meurepresentante.dominio.Projeto"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="br.com.luque.meurepresentante.servico.CarregadorDadosMC"%>
 <%@page import="br.com.luque.meurepresentante.dominio.Politico"%>
 <%@page import="java.util.List"%>
@@ -17,5 +19,19 @@
     <body>
         <h1>Dados carregados:</h1>
         Exibir dados carregados aqui.
+        <pre><%
+                CarregadorDadosMC carregadorDadosMC = new CarregadorDadosMC();
+                List<Projeto> projetos = carregadorDadosMC.carregarProjetos(new ArrayList<Politico>());
+                for (Projeto projeto : projetos) {
+                    if(!projeto.getAutores().isEmpty()) {
+                        String nomesProj = "";
+                    for(Politico autor : projeto.getAutores()) {
+                        nomesProj += autor.getNome() + ",";
+                    }
+                    out.print(nomesProj);
+            %>;<%= projeto.getAssunto()%>
+<%
+                }}
+            %></pre>
     </body>
 </html>

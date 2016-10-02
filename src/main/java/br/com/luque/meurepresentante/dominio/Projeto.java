@@ -22,7 +22,7 @@ public class Projeto extends EntidadeDominio {
 
     @Column(name = "assunto", length = 1000)
     private String assunto;
-    @ManyToMany(mappedBy = "projetos", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "projetos", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private List<Politico> autores = new ArrayList();
     @Column(name = "numero")
     private String numero;

@@ -38,6 +38,7 @@ public class CarregadorDadosMC implements CarregadorDadosMunicipais {
         String url = "http://www.cmmc.sp.gov.br/vereadores";
         Document documento = Jsoup.connect(url).userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36").get();
         ArrayList<Politico> vereadores = new ArrayList();
+        Map<String, Politico> mapaVereadores = new HashMap();
         Elements fotos = documento.getElementsByAttributeValueContaining("src", "fotos");
         for (int i = 0; i < fotos.size(); ++i) {
             Element foto = (Element) fotos.get(i);
@@ -58,7 +59,87 @@ public class CarregadorDadosMC implements CarregadorDadosMunicipais {
             vereador.setMunicipio(MUNICIPIO);
             vereador.setEstado(ESTADO);
             vereadores.add(vereador);
+            mapaVereadores.put(vereador.getNome(), vereador);
         }
+
+        // Vereadores que tem apenas o nome nas paginas de projetos.
+        for (String urlBase : new String[]{"http://www.cmmc.sp.gov.br/projetos/plo.php",
+            "http://www.cmmc.sp.gov.br/projetos/plc.php",
+            "http://www.cmmc.sp.gov.br/projetos/plo.php",
+            "http://www.cmmc.sp.gov.br/projetos/pelo.php",
+            "http://www.cmmc.sp.gov.br/projetos/pdl.php",
+            "http://www.cmmc.sp.gov.br/projetos/pr.php"}) {
+
+            Stack<String> paginas = new Stack();
+            paginas.push(urlBase);
+            while (!paginas.isEmpty()) {
+                String urlPagina = paginas.pop();
+                Document documentoProjeto = Jsoup.connect(urlPagina).userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36").get();
+                //
+                // Carrega os dados dos vereadores.
+                //
+
+                // Procura pela tabela com os dados dos projetos.
+                Elements tabelaProjetos = documento.select(".tabelaPadrao tr");
+                // Descarta a primeira linha (cabecalho).
+                for (int i = 1; i < tabelaProjetos.size(); i++) {
+                    Element linhaTabela = tabelaProjetos.get(i);
+                    // Recupera os dados do projeto.
+                    Elements links = linhaTabela.getElementsByTag("a");
+
+                    String textoAutores = links.get(1).text();
+
+                    // Encontra os vereadores que propuseram o projeto.
+                    // ToDo: Carregar mesas diretivas por gestao (nao e possivel
+                    // definir quais vereadores propuseram o projeto sem saber quais
+                    // deles compuseram a mesa diretiva no momento para proposta
+                    // do projeto.
+                    // ToDo: Carregar projetos propostos pelo prefeito.
+                    if (!textoAutores.trim().isEmpty()
+                            && !textoAutores.contains("MESA DIRETIVA")
+                            && !textoAutores.contains("PREFEITO")) {
+                        String[] textosAutores = textoAutores.split(",");
+                        List<String> nomesAutores = new ArrayList();
+                        nomesAutores.addAll(Arrays.asList(textosAutores));
+                        if (nomesAutores.size() > 1) {
+                            String ultimoNome = nomesAutores.get(nomesAutores.size() - 1);
+                            // Remove o ultimo nome.
+                            nomesAutores.remove(nomesAutores.size() - 1);
+                            // Separa o ultimo nome pelo " E " e adiciona os dois nomes
+                            // separados.
+                            String[] ultimosNomes = ultimoNome.split(" E ");
+                            nomesAutores.addAll(Arrays.asList(ultimosNomes));
+                        }
+
+                        for (String nomeAutor : nomesAutores) {
+                            Politico vereador = mapaVereadores.get(nomeAutor);
+                            if (vereador == null) {
+                                // Cria um novo vereador com o nome especificado.
+                                vereador = new Politico();
+                                vereador.setNome(nomeAutor.trim());
+                                vereador.setMunicipio(MUNICIPIO);
+                                vereador.setEstado(ESTADO);
+                                vereador.setFuncaoAtual(Funcao.VEREADOR);
+                                mapaVereadores.put(vereador.getNome(), vereador);
+                            }
+                            vereadores.add(vereador);
+                            mapaVereadores.put(vereador.getNome(), vereador);
+                        }
+                    }
+                }
+
+                // Verifica se a pagina contem um link para proximas paginas.
+                Elements links = documentoProjeto.getElementsContainingText("próximo");
+                for (Element link : links) {
+                    if (link.tagName().equals("b")) {
+                        String linkParaProximaPagina = urlBase + link.parent().attr("href");
+                        paginas.push(linkParaProximaPagina);
+                    }
+                }
+            }
+
+        }
+
         return vereadores;
     }
 
@@ -74,7 +155,6 @@ public class CarregadorDadosMC implements CarregadorDadosMunicipais {
 
         for (String urlBase : new String[]{"http://www.cmmc.sp.gov.br/projetos/plo.php",
             "http://www.cmmc.sp.gov.br/projetos/plc.php",
-            "http://www.cmmc.sp.gov.br/projetos/plo.php",
             "http://www.cmmc.sp.gov.br/projetos/pelo.php",
             "http://www.cmmc.sp.gov.br/projetos/pdl.php",
             "http://www.cmmc.sp.gov.br/projetos/pr.php"}) {
@@ -90,7 +170,6 @@ public class CarregadorDadosMC implements CarregadorDadosMunicipais {
                 for (Element link : links) {
                     if (link.tagName().equals("b")) {
                         String linkParaProximaPagina = urlBase + link.parent().attr("href");
-                        System.out.println("---- Link para o proximo: " + linkParaProximaPagina);
                         paginas.push(linkParaProximaPagina);
                     }
                 }
@@ -159,7 +238,6 @@ public class CarregadorDadosMC implements CarregadorDadosMunicipais {
                         autor.setEstado(ESTADO);
                         autor.setFuncaoAtual(Funcao.VEREADOR);
                         autor.addProjeto(projeto);
-                        autor.setNovo(true);
                         mapaVereadores.put(autor.getNome(), autor);
                     }
                     autores.add(autor);
